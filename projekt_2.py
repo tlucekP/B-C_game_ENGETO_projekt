@@ -12,6 +12,9 @@ import time # importuji modul pro práci s časem (bude mi sloužit k počítán
 
 
 def generate_secret_number(): # Funkce pro vytvoření tajného čísla
+    """
+    Generuje náhodné číslo pro hádání ve hře
+    """
     digits = list('123456789')  # První číslice nemůže být 0
     first_digit = random.choice(digits)
     digits.remove(first_digit)
@@ -21,6 +24,13 @@ def generate_secret_number(): # Funkce pro vytvoření tajného čísla
 
 
 def validate_guess(guess): # Funkce pro ověření vstupu uživatele
+    """
+    Ověří, zda vstup uživatele odpovídá podmínkám:
+    - všechny znaky pouze čísla
+    - délka vstupu max. 4 znaky
+    - číslo nesmí začínat nulou
+    - číslo musí obsahovat unikátní číslice
+    """
     if len(guess) != 4:
         return "Vstup musí být 4 číslice."
     if not guess.isdigit():
@@ -32,16 +42,29 @@ def validate_guess(guess): # Funkce pro ověření vstupu uživatele
     return None
 
 def evaluate_guess(secret, guess): # Funkce pro vyhodnocení bulls a cows
+    """
+    Vyhodnocuje bulls nad cows
+    """
     bulls = sum(s == g for s, g in zip(secret, guess))
     cows = sum(min(secret.count(d), guess.count(d)) for d in set(guess)) - bulls
     return bulls, cows
 
 def display_result(bulls, cows): # Funkce pro zobrazení výsledku s ohledem na jednotné a množné číslo
+    """
+    Zobrazí výsledek s ohledem na jednotné a množné číslo (bull/s, cow/s)
+    """
     bull_text = "bull" if bulls == 1 else "bulls"
     cow_text = "cow" if cows == 1 else "cows"
     return f"{bulls} {bull_text}, {cows} {cow_text}"
 
 def play_game(): # Funkce pro spuštění hry
+    """
+    Průběh hry
+
+    - vypisuje uvítání a výzvu ke hře
+    - while smyčka kontroluje vstup uživatele a eliminuje jiná zadání, než 4místné číslo
+    - počítá čas, za jak dlouho hráč hru dokončí, v sekundách
+    """
     print("*" * 28)
     print("AHOJ! Pojď si zahrát hru Bulls & Cows!")
     print("*" * 28)
